@@ -1,16 +1,19 @@
 class LoginPage {
   elements = {
-    usernameInput: () => cy.get("#user-name"),
-    passwordInput: () => cy.get("#password"),
-    loginBtn: () => cy.get("#login-button"),
-    errorMessage: () => cy.get('h3[data-test="error"]'),
+    usernameInput: () => cy.get("input[isentiatextinput]"),
+    passwordInput: () => cy.get("input[isentiapasswordinput]"),
+    loginBtn: () => cy.get("button[type='submit']"),
+    profileBtn: () => cy.get('isentia-avatar'),
+    signOutBtn: () => cy.contains('span', 'Sign out'),  
+    errorMessage: () => cy.get('input[type="password"]').siblings('p[isentiatext]')
   };
 
   typeUsername(username) {
-    this.elements.usernameInput().type(username);
+    this.elements.usernameInput().clear().type(username);
   }
 
   typePassword(password) {
+    this.elements.passwordInput().clear();
     this.elements.passwordInput().type(password);
   }
 
@@ -18,10 +21,15 @@ class LoginPage {
     this.elements.loginBtn().click();
   }
 
+  clickLogout() {
+    this.elements.profileBtn().click();
+    this.elements.signOutBtn().click();
+  }
+
   submitLogin(username,password){
-    this.elements.usernameInput().type(username);
-    this.elements.passwordInput().type(password);
-    this.elements.loginBtn().click();
+    this.typeUsername(username);
+    this.typePassword(password);
+    this.clickLogin();
   }
 }
 
