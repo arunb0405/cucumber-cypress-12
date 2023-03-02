@@ -7,13 +7,10 @@ import {
 import {loginPage} from '@pages/LoginPage'
 
 before(() => {
-    testEnv = Cypress.env('host')
-    cy.log(`Derived Host is - ${testEnv}`)
 })
 
 Given('the User is on Login page', () => {
-     cy.visit(`https://app.${testEnv}.mediaportal.com/isentia/#/login`)
-    //  cy.visit('/') //=> Visits the base URL
+     cy.visit('/') //=> Visits the base URL
 })
 
 When("the user enters the username {string}", (username) => {
@@ -33,7 +30,7 @@ When("the user signs in", () => {
 })
 
 Then("the user verifies login page title", () => {
-    cy.title().should('include', 'Your feed - Isentia');
+    cy.title().should('include', loginPage.pageTitle);
 })
 
 When("the user logs off", () => {
@@ -43,9 +40,8 @@ When("the user logs off", () => {
 When("the user verifies Error message {string}", (errMsg) => {
     loginPage.elements.errorMessage().should(($div) => {
         const text = $div.text();
-        console.log('Text is '+text);      
         expect(text).to.include(errMsg);
-      })
+      })     
 })
 
 

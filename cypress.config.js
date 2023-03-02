@@ -2,7 +2,7 @@ const { defineConfig } = require("cypress");
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
 const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild");
-const allureWriter = require("@shelex/cypress-allure-plugin/writer");
+const mochawesome = require("cypress-mochawesome-reporter/plugin");
 
 async function setupNodeEvents(on, config) {
   // This is required for the preprocessor to be able to generate JSON reports after each run, and more,
@@ -14,7 +14,7 @@ async function setupNodeEvents(on, config) {
       plugins: [createEsbuildPlugin.default(config)],
     })
   );
-  allureWriter(on, config);
+  mochawesome(on, config);
 
   // Make sure to return the config object as it might have been modified by the plugin.
   return config;
@@ -23,13 +23,13 @@ async function setupNodeEvents(on, config) {
 module.exports = defineConfig({
   e2e: {
     setupNodeEvents,
-    specPattern: "cypress/e2e/features/mpLogin.feature",
-    baseUrl: "https://app.uat.mediaportal.com/#/login",
+    reporter: 'cypress-mochawesome-reporter',
+    specPattern: "cypress/e2e/features/*",
+    baseUrl: "https://www.saucedemo.com",
     chromeWebSecurity: false,
-    video: false,
+    video: true,
     env: {
-      allureReuseAfterSpec: true,
-      host: "uat"
+      allureReuseAfterSpec: true
     },
   },
 });

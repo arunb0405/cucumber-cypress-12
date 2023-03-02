@@ -1,11 +1,13 @@
 class LoginPage {
+  pageTitle = "Swag Labs";
+
   elements = {
-    usernameInput: () => cy.get("input[isentiatextinput]"),
-    passwordInput: () => cy.get("input[isentiapasswordinput]"),
-    loginBtn: () => cy.get("button[type='submit']"),
-    profileBtn: () => cy.get('isentia-avatar'),
-    signOutBtn: () => cy.contains('span', 'Sign out'),  
-    errorMessage: () => cy.get('input[type="password"]').siblings('p[isentiatext]')
+    usernameInput: () => cy.get("input[data-test='username']"),
+    passwordInput: () => cy.get("input[data-test='password']"),
+    loginBtn: () => cy.get("input[data-test='login-button']"),
+    profileBtn: () => cy.get('#react-burger-menu-btn'),
+    signOutBtn: () => cy.get('a').contains('Logout'),  
+    errorMessage: () => cy.get('h3[data-test="error"]')
   };
 
   typeUsername(username) {
