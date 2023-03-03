@@ -1,7 +1,9 @@
-class ProductPage {
+class ProductPage { 
+
   elements = {
     backPackAddCart: () => cy.xpath("//div[text()='Sauce Labs Backpack']/ancestor::div[@class='inventory_item_label']/following-sibling::div//button"),
     cartButton: () => cy.get('a.shopping_cart_link'),
+    priceTag: (itemName) => cy.get('div').contains(itemName).parents('div.inventory_item_label').siblings('div.pricebar').find('div.inventory_item_price'),
     checkoutButton: () => cy.get('button[data-test="checkout"]'),
     checkoutTitle: () => cy.get('.header_secondary_container .title'),
     checkedOutItem: () => cy.get('div.inventory_item_name'),
@@ -13,7 +15,9 @@ class ProductPage {
     lastName: () => cy.get('#last-name'),
     postalCode: () => cy.get('#postal-code'),
     continueBtn: () => cy.get('#continue'),
-    finishBtn: () => cy.get('#finish')
+    checkOutPrice: () => cy.get('div.inventory_item_price'),
+    finishBtn: () => cy.get('#finish'),
+    orderConfirm: () => cy.get('h2.complete-header')
   };
   
   clickAddtoCart(item) {
@@ -28,12 +32,15 @@ class ProductPage {
       this.elements.checkoutButton().click();
   }
 
-  verifyCheckout() {
+  verifyCheckout(checkPrice) {
     this.elements.checkoutTitle().should('have.text', 'Checkout: Overview');
     this.elements.paymentInfo().should('be.visible');
     this.elements.shippingInfo().should('be.visible');
     this.elements.priceInfo().should('be.visible');
     this.elements.totalInfo().should('be.visible');
+    this.elements.checkOutPrice().invoke('text').then((checkoutPrice) =>{
+       expect(checkoutPrice).to.eql(checkPrice);
+    })
   }
 
   continueOrder(fname, lname, pcode) {
@@ -47,6 +54,11 @@ class ProductPage {
     this.elements.finishBtn().click(); 
   }
 
+  checkOrderConfirm(confirmMsg) {
+    this.elements.orderConfirm().invoke('text').then((msgTxt) => {
+      expect(msgTxt.trim()).to.eql(confirmMsg.trim());
+    })
+  }
 }
 
 export const productPage = new ProductPage();

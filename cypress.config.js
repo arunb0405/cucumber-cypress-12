@@ -28,8 +28,6 @@ module.exports = defineConfig({
     baseUrl: "https://www.saucedemo.com",
     chromeWebSecurity: false,
     video: true,
-    env: {
-      allureReuseAfterSpec: true
-    },
+    defaultCommandTimeout: 10000
   },
 });
